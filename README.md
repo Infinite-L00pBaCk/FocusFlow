@@ -179,7 +179,7 @@ focusflow-app/
 │   └── types/           # TypeScript types
 ├── index.html
 └── package.json
-```
+``` 
 
 ---
 
