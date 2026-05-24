@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { BarChart3, Bell, Keyboard, ListTodo, Palette, ShieldCheck, Timer, Volume2 } from 'lucide-react';
 import { CinematicBackground } from './CinematicBackground';
 import { FocusFlowLogo } from './FocusFlowLogo';
+import { useAuth } from '../contexts';
 import { QUOTES } from '../types';
 
 interface LandingPageProps {
@@ -88,8 +89,11 @@ const faqs = [
 const QUOTE_INTERVAL_MS = 15000;
 
 export function LandingPage({ onEnterApp, onOpenAuth }: LandingPageProps) {
+  const { user, signOut } = useAuth();
   const [quoteIndex, setQuoteIndex] = useState(() => Math.floor(Math.random() * QUOTES.length));
   const quote = useMemo(() => QUOTES[quoteIndex], [quoteIndex]);
+  const displayName = user?.user_metadata?.display_name || user?.email?.split('@')[0] || 'Account';
+  const avatarInitial = displayName.charAt(0).toUpperCase();
 
   useEffect(() => {
     const quoteTimer = window.setInterval(() => {
@@ -131,18 +135,30 @@ export function LandingPage({ onEnterApp, onOpenAuth }: LandingPageProps) {
             </div>
           </div>
 
-          <div className="landing-actions">
-            <button className="landing-text-button" type="button" onClick={onOpenAuth}>
-              Sign Up
-            </button>
-            <button
-              className="liquid-glass landing-login"
-              type="button"
-              onClick={onOpenAuth}
-            >
-              Login
-            </button>
-          </div>
+          {user ? (
+            <div className="landing-actions landing-user-actions">
+              <button className="liquid-glass landing-user-pill" type="button" onClick={onEnterApp}>
+                <span className="landing-user-avatar">{avatarInitial}</span>
+                <span className="landing-user-name">{displayName}</span>
+              </button>
+              <button className="landing-text-button" type="button" onClick={() => void signOut()}>
+                Sign Out
+              </button>
+            </div>
+          ) : (
+            <div className="landing-actions">
+              <button className="landing-text-button" type="button" onClick={onOpenAuth}>
+                Sign Up
+              </button>
+              <button
+                className="liquid-glass landing-login"
+                type="button"
+                onClick={onOpenAuth}
+              >
+                Login
+              </button>
+            </div>
+          )}
         </nav>
       </div>
 

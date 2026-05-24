@@ -9,7 +9,7 @@ interface AuthModalProps {
 }
 
 export function AuthModal({ isOpen, onClose }: AuthModalProps) {
-  const { user, signIn, signUp, signOut, loading } = useAuth();
+  const { user, signIn, signUp, signInWithGoogle, signOut, loading } = useAuth();
   const [isSignUp, setIsSignUp] = useState(false);
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
@@ -41,6 +41,18 @@ export function AuthModal({ isOpen, onClose }: AuthModalProps) {
   const handleSignOut = async () => {
     await signOut();
     onClose();
+  };
+
+  const handleGoogleSignIn = async () => {
+    setError('');
+    setSubmitting(true);
+
+    const { error } = await signInWithGoogle();
+
+    if (error) {
+      setError(error.message);
+      setSubmitting(false);
+    }
   };
 
   if (loading) return null;
@@ -165,6 +177,46 @@ export function AuthModal({ isOpen, onClose }: AuthModalProps) {
                 </div>
               ) : (
                 <form onSubmit={handleSubmit}>
+                  <button
+                    type="button"
+                    onClick={handleGoogleSignIn}
+                    disabled={submitting}
+                    style={{
+                      width: '100%',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      gap: '12px',
+                      padding: '14px',
+                      background: '#ffffff',
+                      border: 'none',
+                      borderRadius: '12px',
+                      color: '#111111',
+                      fontSize: '15px',
+                      fontWeight: 600,
+                      cursor: submitting ? 'not-allowed' : 'pointer',
+                      marginBottom: '16px',
+                    }}
+                  >
+                    <GoogleIcon />
+                    <span>Continue with Google</span>
+                  </button>
+
+                  <div
+                    style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '12px',
+                      marginBottom: '16px',
+                    }}
+                  >
+                    <div style={{ flex: 1, height: '1px', background: 'rgba(255,255,255,0.08)' }} />
+                    <span style={{ color: '#666666', fontSize: '12px', textTransform: 'uppercase', letterSpacing: '0.08em' }}>
+                      or
+                    </span>
+                    <div style={{ flex: 1, height: '1px', background: 'rgba(255,255,255,0.08)' }} />
+                  </div>
+
                   {isSignUp && (
                     <div style={{ marginBottom: '16px' }}>
                       <div style={{ position: 'relative' }}>
@@ -315,5 +367,28 @@ export function AuthModal({ isOpen, onClose }: AuthModalProps) {
         </div>
       )}
     </AnimatePresence>
+  );
+}
+
+function GoogleIcon() {
+  return (
+    <svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true">
+      <path
+        fill="#4285F4"
+        d="M17.64 9.2c0-.64-.06-1.25-.16-1.84H9v3.48h4.84a4.14 4.14 0 0 1-1.8 2.72v2.26h2.92c1.7-1.57 2.68-3.88 2.68-6.62Z"
+      />
+      <path
+        fill="#34A853"
+        d="M9 18c2.43 0 4.47-.8 5.96-2.18l-2.92-2.26c-.8.54-1.84.86-3.04.86-2.34 0-4.33-1.58-5.04-3.71H.94v2.33A8.99 8.99 0 0 0 9 18Z"
+      />
+      <path
+        fill="#FBBC05"
+        d="M3.96 10.71a5.41 5.41 0 0 1 0-3.42V4.96H.94a9.01 9.01 0 0 0 0 8.08l3.02-2.33Z"
+      />
+      <path
+        fill="#EA4335"
+        d="M9 3.58c1.32 0 2.5.45 3.43 1.35l2.59-2.59C13.46.89 11.42 0 9 0A8.99 8.99 0 0 0 .94 4.96l3.02 2.33C4.67 5.16 6.66 3.58 9 3.58Z"
+      />
+    </svg>
   );
 }
