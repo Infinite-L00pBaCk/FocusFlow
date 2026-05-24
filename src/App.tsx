@@ -8,8 +8,11 @@ import { AuthModal } from './components/Auth/AuthModal';
 import { TaskPanel } from './components/Tasks/TaskPanel';
 import { AmbientSoundProvider } from './contexts/AmbientSoundContext';
 import { AmbientSoundPanel } from './components/AmbientSound/AmbientSoundPanel';
+import { LandingPage } from './components/LandingPage';
+import { CinematicBackground } from './components/CinematicBackground';
 
 function AppContent() {
+  const [showLanding, setShowLanding] = useState(true);
   const [showSettings, setShowSettings] = useState(false);
   const [showStats, setShowStats] = useState(false);
   const [showAuth, setShowAuth] = useState(false);
@@ -21,6 +24,11 @@ function AppContent() {
 
   // Update document title with timer
   useEffect(() => {
+    if (showLanding) {
+      document.title = 'FocusFlow';
+      return;
+    }
+
     const minutes = Math.floor(timeLeft / 60);
     const seconds = timeLeft % 60;
     const timeStr = `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
@@ -31,7 +39,7 @@ function AppContent() {
     } else {
       document.title = 'FocusFlow - Focus Timer';
     }
-  }, [timeLeft, mode, isRunning, isPaused]);
+  }, [timeLeft, mode, isRunning, isPaused, showLanding]);
 
   // Keyboard shortcuts
   const handleKeyDown = useCallback((e: KeyboardEvent) => {
@@ -102,12 +110,28 @@ function AppContent() {
   }, [isRunning, isPaused, start, pause, resume, reset, skip, mode, setMode, adjustTime]);
 
   useEffect(() => {
+    if (showLanding) {
+      return undefined;
+    }
+
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [handleKeyDown]);
+  }, [handleKeyDown, showLanding]);
+
+  if (showLanding) {
+    return (
+      <>
+        <LandingPage onEnterApp={() => setShowLanding(false)} onOpenAuth={() => setShowAuth(true)} />
+        <AuthModal isOpen={showAuth} onClose={() => setShowAuth(false)} />
+      </>
+    );
+  }
 
   return (
-    <div style={{ minHeight: '100vh', background: '#000000' }}>
+    <div className="focusflow-app-shell">
+      <CinematicBackground className="app-video" />
+      <div className="app-overlay" />
+
       {!isFocusMode && (
         <Header
           onOpenSettings={() => setShowSettings(true)}

@@ -65,25 +65,27 @@ export function TimerDisplay({ isFocusMode = false }: TimerDisplayProps) {
             justifyContent: 'center',
             width: '48px',
             height: '48px',
-            background: 'rgba(255, 255, 255, 0.04)',
-            border: '1px solid rgba(255, 255, 255, 0.1)',
+            background: 'rgba(255, 255, 255, 0.035)',
+            border: '1px solid rgba(255, 255, 255, 0.14)',
             borderRadius: '50%',
-            color: '#666666',
+            color: 'rgba(255, 255, 255, 0.55)',
             cursor: 'pointer',
             outline: 'none',
             transition: 'all 0.2s ease',
             opacity: isRunning ? 0 : 1,
             pointerEvents: isRunning ? 'none' : 'auto',
+            backdropFilter: 'blur(12px)',
+            WebkitBackdropFilter: 'blur(12px)',
           }}
           onMouseEnter={e => {
             e.currentTarget.style.background = 'rgba(255, 255, 255, 0.08)';
-            e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.2)';
-            e.currentTarget.style.color = '#888888';
+            e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.26)';
+            e.currentTarget.style.color = '#ffffff';
           }}
           onMouseLeave={e => {
-            e.currentTarget.style.background = 'rgba(255, 255, 255, 0.04)';
-            e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.1)';
-            e.currentTarget.style.color = '#666666';
+            e.currentTarget.style.background = 'rgba(255, 255, 255, 0.035)';
+            e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.14)';
+            e.currentTarget.style.color = 'rgba(255, 255, 255, 0.55)';
           }}
           title="-5 minutes"
         >
@@ -102,11 +104,12 @@ export function TimerDisplay({ isFocusMode = false }: TimerDisplayProps) {
             userSelect: 'none',
             fontSize: isRunning ? 'clamp(140px, 28vw, 280px)' : 'clamp(100px, 18vw, 160px)',
             transition: 'font-size 0.5s ease',
+            textShadow: '0 18px 50px rgba(0, 0, 0, 0.68), 0 0 34px rgba(255, 255, 255, 0.12)',
           }}
         >
           <span>{minuteStr}</span>
           <motion.span
-            style={{ margin: '0 0.05em', color: '#333333' }}
+            style={{ margin: '0 0.05em', color: 'rgba(255, 255, 255, 0.18)' }}
             animate={{ opacity: isRunning ? [1, 0.3, 1] : 0.5 }}
             transition={{ duration: 1, repeat: isRunning ? Infinity : 0, ease: 'easeInOut' }}
           >
@@ -127,25 +130,27 @@ export function TimerDisplay({ isFocusMode = false }: TimerDisplayProps) {
             justifyContent: 'center',
             width: '48px',
             height: '48px',
-            background: 'rgba(255, 255, 255, 0.04)',
-            border: '1px solid rgba(255, 255, 255, 0.1)',
+            background: 'rgba(255, 255, 255, 0.035)',
+            border: '1px solid rgba(255, 255, 255, 0.14)',
             borderRadius: '50%',
-            color: '#666666',
+            color: 'rgba(255, 255, 255, 0.55)',
             cursor: 'pointer',
             outline: 'none',
             transition: 'all 0.2s ease',
             opacity: isRunning ? 0 : 1,
             pointerEvents: isRunning ? 'none' : 'auto',
+            backdropFilter: 'blur(12px)',
+            WebkitBackdropFilter: 'blur(12px)',
           }}
           onMouseEnter={e => {
             e.currentTarget.style.background = 'rgba(255, 255, 255, 0.08)';
-            e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.2)';
-            e.currentTarget.style.color = '#888888';
+            e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.26)';
+            e.currentTarget.style.color = '#ffffff';
           }}
           onMouseLeave={e => {
-            e.currentTarget.style.background = 'rgba(255, 255, 255, 0.04)';
-            e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.1)';
-            e.currentTarget.style.color = '#666666';
+            e.currentTarget.style.background = 'rgba(255, 255, 255, 0.035)';
+            e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.14)';
+            e.currentTarget.style.color = 'rgba(255, 255, 255, 0.55)';
           }}
           title="+5 minutes"
         >
@@ -173,7 +178,7 @@ export function TimerDisplay({ isFocusMode = false }: TimerDisplayProps) {
             }}
           >
             <p style={{
-              color: '#888888',
+              color: 'rgba(255, 255, 255, 0.72)',
               fontSize: '15px',
               fontStyle: 'italic',
               lineHeight: 1.7,
@@ -182,7 +187,7 @@ export function TimerDisplay({ isFocusMode = false }: TimerDisplayProps) {
               "{quote.text}"
             </p>
             <p style={{
-              color: '#666666',
+              color: 'rgba(255, 255, 255, 0.46)',
               fontSize: '12px',
               marginTop: '10px',
               fontWeight: 500,

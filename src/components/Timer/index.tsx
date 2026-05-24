@@ -30,8 +30,10 @@ export function Timer({ isFocusMode = false }: TimerProps) {
         height: '100vh',
         overflow: 'hidden',
         padding: isFocusMode ? '40px 40px 40px 40px' : '80px 40px 40px 40px',
-        background: '#000000',
+        background: 'transparent',
         boxSizing: 'border-box',
+        position: 'relative',
+        zIndex: 1,
       }}
     >
       {/* Mode Selector - Hidden in focus mode */}
@@ -58,8 +60,11 @@ export function Timer({ isFocusMode = false }: TimerProps) {
             gap: '10px',
             padding: '10px 20px',
             background: 'rgba(255, 255, 255, 0.03)',
+            backdropFilter: 'blur(10px)',
+            WebkitBackdropFilter: 'blur(10px)',
             borderRadius: '12px',
-            border: `1px solid ${currentTask.color}40`,
+            border: `1px solid ${currentTask.color}55`,
+            boxShadow: 'inset 0 1px 1px rgba(255,255,255,0.08)',
           }}
         >
           <div
@@ -91,7 +96,7 @@ export function Timer({ isFocusMode = false }: TimerProps) {
           style={{
             width: '280px',
             height: '2px',
-            background: '#1a1a1a',
+            background: 'rgba(255, 255, 255, 0.12)',
             borderRadius: '1px',
             overflow: 'hidden',
             marginBottom: '32px',
@@ -101,7 +106,7 @@ export function Timer({ isFocusMode = false }: TimerProps) {
             style={{
               height: '100%',
               width: `${timerProgress}%`,
-              background: themeColor,
+              background: `linear-gradient(90deg, ${themeColor}, #ffffff)`,
               borderRadius: '1px',
               transition: 'width 0.3s linear',
             }}
@@ -146,7 +151,7 @@ export function Timer({ isFocusMode = false }: TimerProps) {
               style={{
                 width: '100px',
                 height: '3px',
-                background: '#1a1a1a',
+                background: 'rgba(255, 255, 255, 0.14)',
                 borderRadius: '2px',
                 overflow: 'hidden',
               }}
@@ -155,7 +160,7 @@ export function Timer({ isFocusMode = false }: TimerProps) {
                 style={{
                   height: '100%',
                   width: `${goalProgress}%`,
-                  background: '#ffffff',
+                  background: `linear-gradient(90deg, ${themeColor}, #ffffff)`,
                   borderRadius: '2px',
                   transition: 'width 0.3s ease',
                 }}
@@ -175,10 +180,11 @@ export function Timer({ isFocusMode = false }: TimerProps) {
         style={{
           position: 'fixed',
           bottom: '24px',
-          color: '#666666',
+          color: 'rgba(255, 255, 255, 0.5)',
           fontSize: '12px',
           letterSpacing: '0.05em',
-          opacity: 0.6,
+          opacity: 0.8,
+          zIndex: 2,
         }}
       >
         SPACE start/pause • R reset • S skip • F focus • ↑↓ adjust time • ←→ change mode

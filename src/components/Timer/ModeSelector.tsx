@@ -30,9 +30,12 @@ export function ModeSelector() {
         display: 'flex',
         gap: '8px',
         padding: '6px',
-        background: '#0a0a0a',
-        border: '1px solid #1a1a1a',
+        background: 'rgba(255, 255, 255, 0.035)',
+        border: '1px solid rgba(255, 255, 255, 0.1)',
         borderRadius: '16px',
+        backdropFilter: 'blur(14px)',
+        WebkitBackdropFilter: 'blur(14px)',
+        boxShadow: 'inset 0 1px 1px rgba(255,255,255,0.08)',
       }}
     >
       {modes.map(m => (
@@ -46,7 +49,7 @@ export function ModeSelector() {
             background: 'transparent',
             border: 'none',
             borderRadius: '12px',
-            color: mode === m.id ? '#ffffff' : '#555555',
+            color: mode === m.id ? '#ffffff' : 'rgba(255, 255, 255, 0.46)',
             fontSize: '14px',
             fontWeight: 500,
             cursor: 'pointer',
@@ -60,8 +63,9 @@ export function ModeSelector() {
               style={{
                 position: 'absolute',
                 inset: 0,
-                background: `${themeColor}25`,
+                background: `linear-gradient(135deg, ${themeColor}45, rgba(255,255,255,0.08))`,
                 borderRadius: '12px',
+                boxShadow: `0 10px 30px ${themeColor}18`,
               }}
               transition={{ type: 'spring', duration: 0.3 }}
             />

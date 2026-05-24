@@ -37,21 +37,23 @@ export function TimerControls() {
             justifyContent: 'center',
             width: '48px',
             height: '48px',
-            background: 'transparent',
-            border: '1px solid #222222',
+            background: 'rgba(255, 255, 255, 0.03)',
+            border: '1px solid rgba(255, 255, 255, 0.12)',
             borderRadius: '50%',
-            color: '#555555',
+            color: 'rgba(255, 255, 255, 0.55)',
             cursor: 'pointer',
             outline: 'none',
             transition: 'border-color 0.2s ease, color 0.2s ease',
+            backdropFilter: 'blur(12px)',
+            WebkitBackdropFilter: 'blur(12px)',
           }}
           onMouseEnter={e => {
-            e.currentTarget.style.borderColor = '#444444';
-            e.currentTarget.style.color = '#888888';
+            e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.24)';
+            e.currentTarget.style.color = '#ffffff';
           }}
           onMouseLeave={e => {
-            e.currentTarget.style.borderColor = '#222222';
-            e.currentTarget.style.color = '#555555';
+            e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.12)';
+            e.currentTarget.style.color = 'rgba(255, 255, 255, 0.55)';
           }}
         >
           <RotateCcw size={18} />
@@ -68,8 +70,8 @@ export function TimerControls() {
           justifyContent: 'center',
           gap: '10px',
           padding: isRunning ? '16px 40px' : '14px 36px',
-          background: isRunning ? 'transparent' : themeColor,
-          border: isRunning ? `1px solid ${themeColor}` : 'none',
+          background: isRunning ? 'rgba(255,255,255,0.03)' : `linear-gradient(135deg, ${themeColor}, #ff9a3d)`,
+          border: isRunning ? `1px solid ${themeColor}` : '1px solid rgba(255,255,255,0.08)',
           borderRadius: '50px',
           color: isRunning ? themeColor : '#000000',
           fontSize: '14px',
@@ -78,6 +80,7 @@ export function TimerControls() {
           cursor: 'pointer',
           outline: 'none',
           transition: 'all 0.2s ease',
+          boxShadow: isRunning ? 'none' : `0 16px 42px ${themeColor}35`,
         }}
       >
         {isRunning ? (
@@ -104,21 +107,23 @@ export function TimerControls() {
             justifyContent: 'center',
             width: '48px',
             height: '48px',
-            background: 'transparent',
-            border: '1px solid #222222',
+            background: 'rgba(255, 255, 255, 0.03)',
+            border: '1px solid rgba(255, 255, 255, 0.12)',
             borderRadius: '50%',
-            color: '#555555',
+            color: 'rgba(255, 255, 255, 0.55)',
             cursor: 'pointer',
             outline: 'none',
             transition: 'border-color 0.2s ease, color 0.2s ease',
+            backdropFilter: 'blur(12px)',
+            WebkitBackdropFilter: 'blur(12px)',
           }}
           onMouseEnter={e => {
-            e.currentTarget.style.borderColor = '#444444';
-            e.currentTarget.style.color = '#888888';
+            e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.24)';
+            e.currentTarget.style.color = '#ffffff';
           }}
           onMouseLeave={e => {
-            e.currentTarget.style.borderColor = '#222222';
-            e.currentTarget.style.color = '#555555';
+            e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.12)';
+            e.currentTarget.style.color = 'rgba(255, 255, 255, 0.55)';
           }}
         >
           <SkipForward size={18} />

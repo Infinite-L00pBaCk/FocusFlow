@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import { useState, type CSSProperties } from 'react';
+import { motion } from 'framer-motion';
 import { Modal } from '../UI';
 import { useStats } from '../../contexts';
 import { Clock, Target, Flame, TrendingUp } from 'lucide-react';
@@ -89,15 +90,22 @@ export function StatsModal({ isOpen, onClose }: StatsModalProps) {
 
         {/* Streak Counter */}
         <div style={{ marginBottom: '32px', textAlign: 'center' }}>
-          <div
+          <motion.div
+            className="stats-streak-3d"
+            initial={{ opacity: 0, rotateX: -12, y: 20 }}
+            animate={{ opacity: 1, rotateX: 0, y: 0 }}
+            whileHover={{ rotateX: 5, rotateY: -6, y: -8 }}
+            transition={{ type: 'spring', stiffness: 180, damping: 18 }}
             style={{
               display: 'inline-flex',
               flexDirection: 'column',
               alignItems: 'center',
               padding: '20px 40px',
-              background: 'linear-gradient(135deg, rgba(239, 68, 68, 0.1), rgba(251, 146, 60, 0.1))',
+              background: 'linear-gradient(145deg, rgba(255, 122, 24, 0.2), rgba(239, 68, 68, 0.1) 46%, rgba(255,255,255,0.035))',
               borderRadius: '16px',
-              border: '1px solid rgba(239, 68, 68, 0.2)',
+              border: '1px solid rgba(255, 139, 54, 0.34)',
+              boxShadow: '0 28px 70px rgba(239, 68, 68, 0.18), inset 0 1px 1px rgba(255,255,255,0.2)',
+              transformStyle: 'preserve-3d',
             }}
           >
             <div style={{ fontSize: '48px', marginBottom: '8px' }}>🔥</div>
@@ -116,7 +124,7 @@ export function StatsModal({ isOpen, onClose }: StatsModalProps) {
                 Best: {stats.longestStreak} {stats.longestStreak === 1 ? 'day' : 'days'}
               </div>
             )}
-          </div>
+          </motion.div>
         </div>
 
         {/* All Time Stats */}
@@ -171,7 +179,16 @@ export function StatsModal({ isOpen, onClose }: StatsModalProps) {
           >
             Last 7 Days
           </h3>
-          <div style={{ padding: '20px', background: 'rgba(255,255,255,0.02)', borderRadius: '12px' }}>
+          <div
+            className="stats-chart-3d"
+            style={{
+              padding: '20px',
+              background: 'linear-gradient(145deg, rgba(255,255,255,0.055), rgba(255,255,255,0.018))',
+              borderRadius: '16px',
+              border: '1px solid rgba(255,255,255,0.08)',
+              boxShadow: 'inset 0 1px 1px rgba(255,255,255,0.12), 0 24px 50px rgba(0,0,0,0.34)',
+            }}
+          >
             <div style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', height: '120px', gap: '8px' }}>
               {weekData.map((day, index) => (
                 <div
@@ -199,17 +216,19 @@ export function StatsModal({ isOpen, onClose }: StatsModalProps) {
                         {day.sessions}
                       </div>
                     )}
-                    <div
+                    <motion.div
+                      className="stats-bar-3d"
+                      initial={{ height: 0, opacity: 0 }}
+                      animate={{ height: `${(day.sessions / maxSessions) * 100}%`, opacity: 1 }}
+                      whileHover={{ y: -6, rotateX: 8, scaleY: 1.04 }}
+                      transition={{ delay: index * 0.06, duration: 0.5, ease: 'easeOut' }}
                       style={{
                         width: '100%',
-                        height: `${(day.sessions / maxSessions) * 100}%`,
                         minHeight: day.sessions > 0 ? '8px' : '4px',
-                        background: day.sessions > 0
-                          ? 'linear-gradient(180deg, #f97316, #ef4444)'
-                          : 'rgba(255,255,255,0.05)',
-                        borderRadius: '4px 4px 0 0',
-                        transition: 'all 0.3s ease',
-                      }}
+                        '--bar-front': day.sessions > 0
+                          ? 'linear-gradient(180deg, #ffb156 0%, #f97316 45%, #ef4444 100%)'
+                          : 'linear-gradient(180deg, rgba(255,255,255,0.14), rgba(255,255,255,0.05))',
+                      } as CSSProperties}
                     />
                   </div>
                   <div
@@ -320,18 +339,26 @@ function StatCard({
   value: string;
 }) {
   return (
-    <div
+    <motion.div
+      className="stats-card-3d"
+      initial={{ opacity: 0, y: 14, rotateX: -8 }}
+      animate={{ opacity: 1, y: 0, rotateX: 0 }}
+      whileHover={{ y: -5, rotateX: 5, rotateY: -4 }}
+      transition={{ type: 'spring', stiffness: 220, damping: 20 }}
       style={{
         padding: '16px',
-        background: 'rgba(255,255,255,0.03)',
+        background: 'linear-gradient(145deg, rgba(255,255,255,0.07), rgba(255,255,255,0.025))',
         borderRadius: '12px',
+        border: '1px solid rgba(255,255,255,0.08)',
+        boxShadow: '0 18px 38px rgba(0,0,0,0.32), inset 0 1px 1px rgba(255,255,255,0.12)',
+        transformStyle: 'preserve-3d',
       }}
     >
-      <div style={{ color: '#444444', marginBottom: '8px' }}>{icon}</div>
-      <div style={{ color: '#ffffff', fontSize: '20px', fontWeight: 500, marginBottom: '4px' }}>
+      <div style={{ color: 'rgba(255,255,255,0.36)', marginBottom: '8px', transform: 'translateZ(18px)' }}>{icon}</div>
+      <div style={{ color: '#ffffff', fontSize: '20px', fontWeight: 600, marginBottom: '4px', transform: 'translateZ(22px)' }}>
         {value}
       </div>
-      <div style={{ color: '#666666', fontSize: '12px' }}>{label}</div>
-    </div>
+      <div style={{ color: 'rgba(255,255,255,0.48)', fontSize: '12px', transform: 'translateZ(14px)' }}>{label}</div>
+    </motion.div>
   );
 }

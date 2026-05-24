@@ -1,6 +1,7 @@
 import { motion } from 'framer-motion';
 import { Settings, BarChart3, User, ListTodo, Volume2 } from 'lucide-react';
 import { useAuth, useTimer } from '../../contexts';
+import { FocusFlowLogo } from '../FocusFlowLogo';
 
 interface HeaderProps {
   onOpenSettings: () => void;
@@ -31,7 +32,10 @@ export function Header({
         right: 0,
         zIndex: 100,
         opacity: isRunning ? 0.4 : 1,
-        background: '#000000',
+        background: 'rgba(0, 0, 0, 0.18)',
+        backdropFilter: 'blur(12px)',
+        WebkitBackdropFilter: 'blur(12px)',
+        borderBottom: '1px solid rgba(255, 255, 255, 0.06)',
         transition: 'opacity 0.5s ease',
       }}
     >
@@ -45,7 +49,6 @@ export function Header({
           justifyContent: 'space-between',
         }}
       >
-        {/* Logo - Click to go home */}
         <div
           onClick={() => window.location.reload()}
           style={{
@@ -55,54 +58,12 @@ export function Header({
             cursor: 'pointer',
           }}
         >
-          {/* Custom FocusFlow SVG Logo */}
-          <svg
-            width="36"
-            height="36"
-            viewBox="0 0 36 36"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            {/* Outer ring */}
-            <circle cx="18" cy="18" r="16" stroke="#2a2a2a" strokeWidth="1.5" />
-            {/* Progress arc — ~75% filled, orange-red gradient via two arcs */}
-            <circle
-              cx="18"
-              cy="18"
-              r="16"
-              stroke="url(#logoGradient)"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeDasharray="75 25"
-              strokeDashoffset="25"
-              transform="rotate(-90 18 18)"
-            />
-            {/* Inner flow line */}
-            <path
-              d="M11 18 C11 14 14 12 18 12 C22 12 25 15 25 18"
-              stroke="#ff6a00"
-              strokeWidth="1.5"
-              strokeLinecap="round"
-              fill="none"
-              opacity="0.6"
-            />
-            {/* Center dot */}
-            <circle cx="18" cy="18" r="2.5" fill="url(#logoGradient)" />
-            {/* Tick mark at 12 o'clock */}
-            <line x1="18" y1="2.5" x2="18" y2="5.5" stroke="#ff4444" strokeWidth="1.5" strokeLinecap="round" />
-            <defs>
-              <linearGradient id="logoGradient" x1="2" y1="2" x2="34" y2="34" gradientUnits="userSpaceOnUse">
-                <stop offset="0%" stopColor="#ff4444" />
-                <stop offset="100%" stopColor="#ff8c00" />
-              </linearGradient>
-            </defs>
-          </svg>
+          <FocusFlowLogo />
           <span style={{ color: '#ffffff', fontWeight: 600, fontSize: '18px', letterSpacing: '-0.02em' }}>
             FocusFlow
           </span>
         </div>
 
-        {/* Navigation */}
         <nav style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
           <NavButton icon={<ListTodo size={20} />} label="Tasks" onClick={onOpenTasks} />
           <NavButton icon={<Volume2 size={20} />} label="Sounds" onClick={onOpenAmbient} />
@@ -120,13 +81,15 @@ export function Header({
               gap: '10px',
               padding: '10px 16px',
               background: '#111111',
-              border: '1px solid #222222',
+              border: '1px solid rgba(255, 255, 255, 0.12)',
               borderRadius: '12px',
+              backdropFilter: 'blur(8px)',
+              WebkitBackdropFilter: 'blur(8px)',
               cursor: 'pointer',
               outline: 'none',
               transition: 'background 0.2s ease',
             }}
-            onMouseEnter={e => (e.currentTarget.style.background = '#1a1a1a')}
+            onMouseEnter={e => (e.currentTarget.style.background = 'rgba(255, 255, 255, 0.08)')}
             onMouseLeave={e => (e.currentTarget.style.background = '#111111')}
           >
             {user ? (
