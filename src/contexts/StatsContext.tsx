@@ -14,6 +14,9 @@ interface StatsContextType {
 const StatsContext = createContext<StatsContextType | undefined>(undefined);
 
 const STORAGE_KEY = 'pomodoro-stats';
+const SETTINGS_STORAGE_KEY = 'pomodoro-settings';
+const MIGRATION_KEY = 'pomodoro-stats-duration-fix-v1';
+const BACKUP_KEY = 'pomodoro-stats-backup-before-duration-fix-v1';
 
 function getTodayKey(): string {
   return new Date().toISOString().split('T')[0];
@@ -24,7 +27,65 @@ export function StatsProvider({ children }: { children: ReactNode }) {
     const stored = localStorage.getItem(STORAGE_KEY);
     if (stored) {
       try {
-        return { ...DEFAULT_STATS, ...JSON.parse(stored) };
+        const parsed = { ...DEFAULT_STATS, ...JSON.parse(stored) } as UserStats;
+
+        // One-time migration:
+        // Older builds incorrectly recorded each completed pomodoro as 25 minutes,
+        // even when users ran custom durations like 1 minute.
+        const migrationApplied = localStorage.getItem(MIGRATION_KEY) === 'applied';
+        if (migrationApplied) {
+          return parsed;
+        }
+
+        const settingsRaw = localStorage.getItem(SETTINGS_STORAGE_KEY);
+        const configuredPomodoroMinutes = (() => {
+          if (!settingsRaw) return null;
+          try {
+            const parsedSettings = JSON.parse(settingsRaw) as { timer?: { pomodoro?: number } };
+            const minutes = parsedSettings?.timer?.pomodoro;
+            return typeof minutes === 'number' && Number.isFinite(minutes) ? Math.max(1, Math.round(minutes)) : null;
+          } catch {
+            return null;
+          }
+        })();
+
+        if (!configuredPomodoroMinutes || configuredPomodoroMinutes === 25) {
+          localStorage.setItem(MIGRATION_KEY, 'applied');
+          return parsed;
+        }
+
+        let changed = false;
+        const migratedDailyStats = parsed.dailyStats.map(day => {
+          if (day.totalPomodoros <= 0) return day;
+
+          // Only rewrite rows that exactly match the known bad pattern.
+          const looksLikeBadLegacyRow = day.totalFocusTime === day.totalPomodoros * 25;
+          if (!looksLikeBadLegacyRow) return day;
+
+          changed = true;
+          return {
+            ...day,
+            totalFocusTime: day.totalPomodoros * configuredPomodoroMinutes,
+          };
+        });
+
+        if (!changed) {
+          localStorage.setItem(MIGRATION_KEY, 'applied');
+          return parsed;
+        }
+
+        const migratedTotalFocusTime = migratedDailyStats.reduce((sum, day) => sum + day.totalFocusTime, 0);
+        const migratedStats: UserStats = {
+          ...parsed,
+          dailyStats: migratedDailyStats,
+          totalFocusTime: migratedTotalFocusTime,
+        };
+
+        // Keep a rollback snapshot just in case.
+        localStorage.setItem(BACKUP_KEY, JSON.stringify(parsed));
+        localStorage.setItem(MIGRATION_KEY, 'applied');
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(migratedStats));
+        return migratedStats;
       } catch {
         return DEFAULT_STATS;
       }
