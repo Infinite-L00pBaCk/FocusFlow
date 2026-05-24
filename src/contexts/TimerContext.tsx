@@ -151,7 +151,8 @@ export function TimerProvider({ children }: { children: ReactNode }) {
       addSession({
         id: Date.now().toString(),
         mode: 'pomodoro',
-        duration: settings.timer.pomodoro,
+        // Use the actual active timer length, not the base settings value.
+        duration: Math.max(1, Math.round(totalTime / 60)),
         completedAt: new Date(),
         taskId: currentTaskId || undefined,
       });
@@ -176,7 +177,7 @@ export function TimerProvider({ children }: { children: ReactNode }) {
         setMode('pomodoro');
       }
     }
-  }, [mode, pomodorosCompleted, settings, addSession, updateStreak, currentTaskId, setMode, playAlarm]);
+  }, [mode, pomodorosCompleted, settings, addSession, updateStreak, currentTaskId, setMode, playAlarm, totalTime]);
 
   const start = useCallback(() => {
     if (intervalRef.current) {
