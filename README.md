@@ -15,7 +15,7 @@
   </defs>
 </svg>
 
-# FocusFlow
+# Focus-Flow
 
 **A beautiful, minimalistic focus timer to help you do your best work.**
 
